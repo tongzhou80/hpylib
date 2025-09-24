@@ -1,12 +1,13 @@
 # hpylib
 
-**hpylib** is a small Python library that provides simple building blocks for parallel programming with threads. It is designed to make it easy to run tasks asynchronously, coordinate them, and perform parallel map operations, all with minimal boilerplate.  
+**hpylib** is a small Python library that provides structured parallel programming constructs. It provides three layers of abstraction:
 
-It provides three main functions:
+1. **`pmap(fn, iterable)` and `pfilter(fn, iterable)`** — parallel map and filter.  
+2. **`finish()` and `spawn(fn)`** — `finish` waits for all tasks submitted inside its block to complete, and `spawn` submits a task to run in a worker thread.
+3. **`async_future(fn)`** — submit a task to run asynchronously and return a future.
 
-1. **`spawn(fn)`** — run a function asynchronously in a worker thread.  
-2. **`finish()`** — context manager to wait for all asynchronous tasks submitted inside its block.  
-3. **`pmap(fn, iterable)`** — parallel map: apply a function to each element of an iterable in parallel, returning the results as a list.
+Layer 1 is the highest level of abstraction, and it does not have explicit tasks. It simply applies a function to each element of an iterable in parallel. Layer 2 spawns tasks to run asynchronously, but does not have explicit joins. Layer 3 is the lowest level of abstraction, and it allows explicit task creation and joining.
+
 
 ---
 
