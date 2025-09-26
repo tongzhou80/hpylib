@@ -7,7 +7,7 @@ import os
 # -------------------------
 # Configuration / pool
 # -------------------------
-mp_or_mt = os.environ.get("HPYLIB_MODE", "mp")  # default to "mp"
+mp_or_mt = os.environ.get("HPYLIB_MODE", "mt")  # default to "mt"
 _pool = None
 
 def _get_pool():
@@ -31,10 +31,13 @@ def async_(fn, *args, **kwargs):
     """Submit a task to run asynchronously in the pool, with optional args/kwargs."""
     future = _get_pool().submit(fn, *args, **kwargs)
     _task_futures.append(future)
-    return future
 
 # Alias
 spawn = async_
+
+def async_future(fn, *args, **kwargs):
+    """Submit a task to run asynchronously and return a future."""
+    return _get_pool().submit(fn, *args, **kwargs)
 
 # -------------------------
 # Finish context manager
